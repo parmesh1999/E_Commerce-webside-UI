@@ -2,50 +2,52 @@ import React, { useState } from "react";
 import axios from "axios";
 import { FaGoogle, FaFacebookF, FaTwitter } from "react-icons/fa";
 
-const Login = ({ showLogin, setShowLogin, setShowSignup, onLoginSuccess }) => {
+const Login = ({
+  showLogin,
+  setShowLogin,
+  setShowSignup,
+  onLoginSuccess,
+  setShowForgotPassword,
+}) => {
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
   const [loginError, setLoginError] = useState("");
 
-  // 
-  
   const handleLoginSubmit = async (e) => {
-  e.preventDefault();
-  setLoginError("");
+    e.preventDefault();
+    setLoginError("");
 
-  try {
-    const response = await axios.post("https://localhost:7000/api/auth/login", {
-      username: loginEmail,
-      password: loginPassword,
-    });
+    try {
+      const response = await axios.post("https://localhost:7000/api/auth/login", {
+        username: loginEmail,
+        password: loginPassword,
+      });
 
-    // ✅ Handle custom statusCode from response body
-    const { statusCode, token, user, role, message } = response.data;
+      const { statusCode, token, user, role, message } = response.data;
 
-    if (statusCode === "200" && token) {
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user || {}));
-      localStorage.setItem("role", JSON.stringify(role || {}));
-
-      setLoginEmail("");
-      setLoginPassword("");
-
-      if (onLoginSuccess) onLoginSuccess();
-      setShowLogin(false);
-    } else if (statusCode === "403") {
-      setLoginError("Please contact the admin.");
-    } else if (statusCode === "404") {
-      setLoginError("Invalid credentials. Please try again.");
-    } else {
-      setLoginError(message || "Login failed. Please try again.");
+      if (statusCode === "200" && token) {
+        localStorage.setItem("token", token);
+        localStorage.setItem("user", JSON.stringify(user || {}));
+        localStorage.setItem("role", JSON.stringify(role || {}));
+        setLoginEmail("");
+        setLoginPassword("");
+        if (onLoginSuccess) onLoginSuccess();
+      } else if (statusCode === "403") {
+        setLoginError("Please contact the admin.");
+      } else if (statusCode === "404") {
+        setLoginError("Invalid credentials. Please try again.");
+      } else {
+        setLoginError(message || "Login failed. Please try again.");
+      }
+    } catch (error) {
+      console.error("Login error:", error.response?.data || error.message);
+      if (error.response && error.response.status === 401) {
+          setLoginError("Invalid credentials. Please try again.");
+      } else {
+          setLoginError("Something went wrong. Please try again later.");
+      }
     }
-
-  } catch (error) {
-    console.error("Login error:", error.response?.data || error.message);
-    setLoginError("Something went wrong. Please try again later.");
-  }
-};
-
+  };
 
   if (!showLogin) return null;
 
@@ -94,6 +96,19 @@ const Login = ({ showLogin, setShowLogin, setShowSignup, onLoginSuccess }) => {
                   required
                 />
               </div>
+              
+              <div className="d-flex justify-content-end mb-3">
+                <button
+                  type="button"
+                  className="btn btn-link p-0 text-decoration-none"
+                  onClick={() => {
+                    setShowLogin(false);
+                    setShowForgotPassword(true);
+                  }}
+                >
+                  Forgot password?
+                </button>
+              </div>
 
               {loginError && (
                 <div className="alert alert-danger p-2">{loginError}</div>
@@ -105,15 +120,9 @@ const Login = ({ showLogin, setShowLogin, setShowSignup, onLoginSuccess }) => {
             </form>
 
             <div className="d-flex justify-content-center gap-2">
-              <button className="btn btn-outline-danger btn-sm">
-                <FaGoogle />
-              </button>
-              <button className="btn btn-outline-primary btn-sm">
-                <FaFacebookF />
-              </button>
-              <button className="btn btn-outline-info btn-sm">
-                <FaTwitter />
-              </button>
+              <button className="btn btn-outline-danger btn-sm"><FaGoogle /></button>
+              <button className="btn btn-outline-primary btn-sm"><FaFacebookF /></button>
+              <button className="btn btn-outline-info btn-sm"><FaTwitter /></button>
             </div>
 
             <p className="text-center mt-3 mb-0">

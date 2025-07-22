@@ -3,12 +3,21 @@ import { useState, useEffect } from "react";
 import { FaUser, FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
 import Signup from "./Signup";
 import Login from "./Login";
+import ForgotPassword from "./ForgotPassword";
 
-function Header({ isLoggedIn, onLoginSuccess, onLogout }) {
-  const [showLogin, setShowLogin] = useState(false);
-  const [showSignup, setShowSignup] = useState(false);
+// Receive all props from App.js
+function Header({
+  isLoggedIn,
+  onLoginSuccess,
+  onLogout,
+  showLogin,
+  setShowLogin,
+  showSignup,
+  setShowSignup,
+  showForgotPassword,
+  setShowForgotPassword
+}) {
   const [username, setUsername] = useState("");
-  // const [userImage, setUserImage] = useState("");
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -16,25 +25,13 @@ function Header({ isLoggedIn, onLoginSuccess, onLogout }) {
       try {
         const parsedUser = JSON.parse(userData);
         setUsername(parsedUser?.name || parsedUser?.username || "User");
-        // setUserImage(parsedUser?.image || "");
       } catch (e) {
         setUsername("User");
-        // setUserImage("");
       }
     } else {
       setUsername("");
-      // setUserImage("");
     }
   }, [isLoggedIn]);
-
-  const handleLoginSuccess = () => {
-    if (onLoginSuccess) onLoginSuccess();
-    setShowLogin(false);
-  };
-
-  const handleLogout = () => {
-    if (onLogout) onLogout();
-  };
 
   return (
     <>
@@ -64,30 +61,12 @@ function Header({ isLoggedIn, onLoginSuccess, onLogout }) {
                   Collection
                 </Link>
               </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/sample2">
-                  Sample 2
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/sample3">
-                  Sample 3
-                </Link>
-              </li>
+              {/* Other nav links */}
             </ul>
 
             <div className="d-flex align-items-center gap-3">
               {isLoggedIn && (
                 <>
-                  {/* ✅ Show user's profile image */}
-                  {/* {userImage && (
-                    <img
-                      src={userImage}
-                      alt="User"
-                      className="rounded-circle"
-                      style={{ width: "35px", height: "35px", objectFit: "cover" }}
-                    />
-                  )} */}
                   <Link
                     to="/profile"
                     className="text-white fw-semibold text-decoration-none"
@@ -121,7 +100,7 @@ function Header({ isLoggedIn, onLoginSuccess, onLogout }) {
               ) : (
                 <button
                   className="btn btn-outline-light"
-                  onClick={handleLogout}
+                  onClick={onLogout}
                 >
                   <FaSignOutAlt className="me-1" /> Logout
                 </button>
@@ -131,16 +110,25 @@ function Header({ isLoggedIn, onLoginSuccess, onLogout }) {
         </div>
       </nav>
 
+      {/* Render all modals here and pass the correct props */}
       <Login
         showLogin={showLogin}
         setShowLogin={setShowLogin}
         setShowSignup={setShowSignup}
-        onLoginSuccess={handleLoginSuccess}
+        onLoginSuccess={onLoginSuccess}
+        setShowForgotPassword={setShowForgotPassword}
       />
 
       <Signup
         showSignup={showSignup}
         setShowSignup={setShowSignup}
+        setShowLogin={setShowLogin}
+        onSignupSuccess={onLoginSuccess}
+      />
+
+      <ForgotPassword
+        showForgotPassword={showForgotPassword}
+        setShowForgotPassword={setShowForgotPassword}
         setShowLogin={setShowLogin}
       />
     </>
