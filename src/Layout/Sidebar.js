@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 
-function Sidebar({ isLoggedIn, isSuperAdmin, isAdmin }) {
+function Sidebar({ isLoggedIn, isSuperAdmin, isAdmin, isUser }) {
   const location = useLocation();
 
 
@@ -200,6 +200,39 @@ function Sidebar({ isLoggedIn, isSuperAdmin, isAdmin }) {
               </li>
             </>
           )}
+
+
+          {/* Admin Menu Items - Only show if user is logged in and is Admin */}
+          {isLoggedIn && isUser && (
+            <>
+
+              <li className="nav-item">
+                <Link
+                  to="/feedback"
+                  className={`nav-link d-flex align-items-center ${
+                    location.pathname === "/feedback" ? "active" : "text-light"
+                  }`}
+                >
+                  <i className="bi bi-chat-dots me-2"></i> Feedback
+                </Link>
+              </li>
+
+              <li className="nav-item">
+                <Link
+                  to="/changepassword"
+                  className={`nav-link d-flex align-items-center ${
+                    location.pathname === "/changepassword"
+                      ? "active"
+                      : "text-light"
+                  }`}
+                >
+                  <i className="bi bi-shield-lock me-2"></i> Change Password
+                </Link>
+              </li>
+            </>
+          )}
+
+
         </ul>
       </div>
     </div>

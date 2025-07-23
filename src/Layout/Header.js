@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { FaUser, FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
+import { useState, useEffect, useContext } from "react"; // 1. Import useContext
+import { FaUser, FaSignInAlt, FaSignOutAlt, FaShoppingCart } from "react-icons/fa";
 import Signup from "./Signup";
 import Login from "./Login";
 import ForgotPassword from "./ForgotPassword";
+import { CartContext } from "../contexts/CartContext";
 
 // Receive all props from App.js
 function Header({
@@ -18,6 +19,10 @@ function Header({
   setShowForgotPassword
 }) {
   const [username, setUsername] = useState("");
+  const { cart } = useContext(CartContext); // 3. Access the cart state from the context
+
+  // Calculate the total number of items in the cart
+  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -73,6 +78,17 @@ function Header({
                   >
                     👤 {username}
                   </Link>
+
+                  {/* 4. Update Cart Icon Link to include a badge */}
+                  <Link to="/cart" className="text-white position-relative">
+                    <FaShoppingCart size={20} />
+                    {totalItems > 0 && (
+                      <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        {totalItems}
+                        <span className="visually-hidden">items in cart</span>
+                      </span>
+                    )}
+                  </Link>
                 </>
               )}
 
@@ -101,16 +117,14 @@ function Header({
                 <button
                   className="btn btn-outline-light"
                   onClick={onLogout}
-                >
-                  <FaSignOutAlt className="me-1" /> Logout
-                </button>
+                ><FaSignOutAlt className="me-1 text-danger" /></button>
               )}
             </div>
           </div>
         </div>
       </nav>
 
-      {/* Render all modals here and pass the correct props */}
+      {/* --- Modals --- */}
       <Login
         showLogin={showLogin}
         setShowLogin={setShowLogin}
@@ -118,14 +132,12 @@ function Header({
         onLoginSuccess={onLoginSuccess}
         setShowForgotPassword={setShowForgotPassword}
       />
-
       <Signup
         showSignup={showSignup}
         setShowSignup={setShowSignup}
         setShowLogin={setShowLogin}
         onSignupSuccess={onLoginSuccess}
       />
-
       <ForgotPassword
         showForgotPassword={showForgotPassword}
         setShowForgotPassword={setShowForgotPassword}

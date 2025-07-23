@@ -1,15 +1,19 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { mockProducts } from './mockData'; // Assuming mockData is in the same folder
+import { mockProducts } from './mockData';
+import { CartContext } from './CartContext';
+import { FaShoppingCart } from 'react-icons/fa'; // Optional: for a nice icon
 
 function ProductDetail() {
-  // Get the 'id' from the URL, e.g., "/product/1" -> id: "1"
   const { id } = useParams();
-  
-  // Find the product in our mock data. Note: useParams returns a string.
   const product = mockProducts.find(p => p.id === parseInt(id));
 
-  // Handle case where product is not found
+  // 1. Get both cart and addToCart from the context
+  const { cart, addToCart } = useContext(CartContext);
+
+  // 2. Check if the product is already in the cart
+  const isInCart = cart.some(item => item.id === product?.id);
+
   if (!product) {
     return (
       <div className="container text-center mt-5">
@@ -43,7 +47,21 @@ function ProductDetail() {
                 </small>
               </p>
               <p className="card-text">{product.description || "No description available for this product."}</p>
-              <button className="btn btn-primary me-2">Add to Cart</button>
+              
+              {/* 3. Conditionally render the button */}
+              {isInCart ? (
+                <Link to="/cart" className="btn btn-info me-2">
+                  <FaShoppingCart className="me-1" /> Go to Cart
+                </Link>
+              ) : (
+                <button 
+                  className="btn btn-primary me-2" 
+                  onClick={() => addToCart(product)}
+                >
+                  Add to Cart
+                </button>
+              )}
+              
               <button className="btn btn-success">Buy Now</button>
             </div>
           </div>
