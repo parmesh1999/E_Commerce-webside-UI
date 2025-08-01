@@ -14,7 +14,7 @@ function Category() {
   const [editCategoryName, setEditCategoryName] = useState("");
   const [viewCategory, setViewCategory] = useState(null);
 
-  const baseUrl = "https://localhost:7000/api/Category"; // Replace with your actual API base URL
+  const baseUrl = "http://localhost:7000/api/Category"; // Replace with your actual API base URL
 
   useEffect(() => {
     fetchCategory();
@@ -71,7 +71,7 @@ function Category() {
   const handleUpdateCategory = async () => {
     if (editCategoryName.trim() !== "") {
       try {
-        await axios.put(`${baseUrl}`, {
+        await axios.put(`${baseUrl}/${editCategoryId}`, {
           id: editCategoryId,
           name: editCategoryName,
         });
@@ -94,9 +94,12 @@ function Category() {
     link.click();
   };
 
-  const filteredCategory = category.filter((c) =>
-    c.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredCategory = Array.isArray(category)
+  ? category.filter((c) =>
+      (c.name || "").toLowerCase().includes((searchTerm || "").toLowerCase())
+    )
+  : [];
+
 
   const startIndex = (currentPage - 1) * pageSize;
   const paginatedCategory = filteredCategory.slice(startIndex, startIndex + pageSize);

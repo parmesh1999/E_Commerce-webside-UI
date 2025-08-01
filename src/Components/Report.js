@@ -12,7 +12,7 @@ function ReportPage() {
       quantity: 100,
       available: 60,
       sold: 40,
-      image: "https://via.placeholder.com/60",
+      image: "http://via.placeholder.com/60",
     },
     {
       id: 2,
@@ -22,7 +22,7 @@ function ReportPage() {
       quantity: 50,
       available: 30,
       sold: 20,
-      image: "https://via.placeholder.com/60",
+      image: "http://via.placeholder.com/60",
     },
   ]);
 
@@ -39,7 +39,7 @@ function ReportPage() {
 
   const fetchCategories = async () => {
       try {
-        const response = await axios.get("https://localhost:7000/api/Category"); // Replace with your API endpoint
+        const response = await axios.get("http://localhost:7000/api/Category"); // Replace with your API endpoint
         setCategories(response.data);
       } catch (error) {
         console.error("Failed to load categories", error);

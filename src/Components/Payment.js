@@ -42,7 +42,7 @@ function Payment() {
 
     const fetchUsers = async () => {
     try {
-      const res = await axios.get("https://localhost:7000/api/User"); // Replace with actual endpoint
+      const res = await axios.get("http://localhost:7000/api/User"); // Replace with actual endpoint
       setUsers(res.data.data);
     } catch (err) {
       console.error("Failed to load users", err);

@@ -14,7 +14,7 @@ const ForgotPassword = ({ showForgotPassword, setShowForgotPassword, setShowLogi
     setLoading(true);
 
     try {
-      await axios.post('https://localhost:7000/api/auth/forgot-password', { email });
+      await axios.post('http://localhost:7000/api/auth/forgot-password', { email });
       // For security, show a generic success message whether the email exists or not.
       setMessage('If an account with that email exists, a password reset link has been sent.');
       setEmail('');

@@ -34,6 +34,7 @@ import UserRole from "./Super Admin/UserRole";
 import ProtectedRoute from './contexts/ProtectedRoute';
 import ProductDetail from './contexts/ProductDetails';
 import Cart from './contexts/Cart';
+import Customer from './Super Admin/Customer';
 
 function App() {
   // ... (all your existing state and handlers remain unchanged)
@@ -143,6 +144,7 @@ function App() {
                   <Route path="/user" element={<User />} />
                   <Route path="/role" element={<Role />} />
                   <Route path="/userrole" element={<UserRole />} />
+                  <Route path="/customer" element={<Customer />} />
                   <Route path="/changepassword" element={<ChangePassword />} />
                   <Route path="/profile" element={<Profile />} />
                 </>

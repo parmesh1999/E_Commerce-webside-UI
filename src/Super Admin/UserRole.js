@@ -20,9 +20,9 @@ function UserRole() {
 
   const [viewUserRole, setViewUserRole] = useState(null);
 
-  const baseUrl = "https://localhost:7000/api/UserRole";
-  const userUrl = "https://localhost:7000/api/User";
-  const roleUrl = "https://localhost:7000/api/Role";
+  const baseUrl = "http://localhost:7000/api/UserRole";
+  const userUrl = "http://localhost:7000/api/User";
+  const roleUrl = "http://localhost:7000/api/Role";
 
   useEffect(() => {
     fetchAll();
@@ -113,11 +113,11 @@ function UserRole() {
   const getUserName = (id) => users.find((u) => u.id === id)?.name || "Unknown";
   const getRoleName = (id) => roles.find((r) => r.id === id)?.name || "Unknown";
 
-  const filteredUserRoles = userRoles.filter((ur) => {
+  const filteredUserRoles = Array.isArray(userRoles) ? userRoles.filter((ur) => {
     const user = getUserName(ur.userId).toLowerCase();
     const role = getRoleName(ur.roleId).toLowerCase();
     return user.includes(searchTerm.toLowerCase()) || role.includes(searchTerm.toLowerCase());
-  });
+  }) : [];
 
   const startIndex = (currentPage - 1) * pageSize;
   const paginatedUserRoles = filteredUserRoles.slice(startIndex, startIndex + pageSize);

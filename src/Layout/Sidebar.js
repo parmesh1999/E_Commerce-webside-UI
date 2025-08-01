@@ -69,6 +69,17 @@ function Sidebar({ isLoggedIn, isSuperAdmin, isAdmin, isUser }) {
 
               <li className="nav-item">
                 <Link
+                  to="/customer"
+                  className={`nav-link d-flex align-items-center ${
+                    location.pathname === "/customer" ? "active" : "text-light"
+                  }`}
+                >
+                  <i className="bi bi-person-lines-fill me-2"></i> Customer
+                </Link>
+              </li>
+
+              <li className="nav-item">
+                <Link
                   to="/changepassword"
                   className={`nav-link d-flex align-items-center ${
                     location.pathname === "/changepassword"

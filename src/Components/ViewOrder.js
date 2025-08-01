@@ -9,13 +9,13 @@ function ViewOrder() {
       status: "Pending",
       items: [
         {
-          image: "https://via.placeholder.com/50",
+          image: "http://via.placeholder.com/50",
           name: "Laptop",
           quantity: 1,
           price: 30000,
         },
         {
-          image: "https://via.placeholder.com/50",
+          image: "http://via.placeholder.com/50",
           name: "Mouse",
           quantity: 2,
           price: 500,
@@ -28,7 +28,7 @@ function ViewOrder() {
       status: "Delivered",
       items: [
         {
-          image: "https://via.placeholder.com/50",
+          image: "http://via.placeholder.com/50",
           name: "Phone",
           quantity: 1,
           price: 20000,
@@ -56,7 +56,7 @@ function ViewOrder() {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get("https://localhost:7000/api/User"); // Replace with actual endpoint
+      const res = await axios.get("http://localhost:7000/api/User"); // Replace with actual endpoint
       setUsers(res.data.data);
     } catch (err) {
       console.error("Failed to load users", err);
@@ -65,7 +65,7 @@ function ViewOrder() {
 
   const fetchStatuses = async () => {
     try {
-      const res = await axios.get("https://localhost:7000/api/OrderStatus"); // Replace with actual endpoint
+      const res = await axios.get("http://localhost:7000/api/OrderStatus"); // Replace with actual endpoint
       setStatuses(res.data);
     } catch (err) {
       console.error("Failed to load statuses", err);

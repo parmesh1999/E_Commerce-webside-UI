@@ -14,7 +14,7 @@ function OrderStatus() {
   const [pageSize, setPageSize] = useState(3);
   const [showAddModal, setShowAddModal] = useState(false);
 
-  const baseUrl = "https://localhost:7000/api/OrderStatus"; // Update if needed
+  const baseUrl = "http://localhost:7000/api/OrderStatus"; // Update if needed
 
   useEffect(() => {
     fetchStatuses();

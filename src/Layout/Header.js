@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect, useContext } from "react"; // 1. Import useContext
 import { FaUser, FaSignInAlt, FaSignOutAlt, FaShoppingCart } from "react-icons/fa";
 import Signup from "./Signup";
@@ -18,6 +18,7 @@ function Header({
   showForgotPassword,
   setShowForgotPassword
 }) {
+  const navigate = useNavigate(); 
   const [username, setUsername] = useState("");
   const { cart } = useContext(CartContext); // 3. Access the cart state from the context
 
@@ -37,6 +38,11 @@ function Header({
       setUsername("");
     }
   }, [isLoggedIn]);
+
+  const handleLogout = () => {
+    onLogout();            // ❗Call the parent logout handler
+    navigate("/");         // ✅ Redirect to home page
+  };
 
   return (
     <>
@@ -114,10 +120,9 @@ function Header({
                   </button>
                 </>
               ) : (
-                <button
-                  className="btn btn-outline-light"
-                  onClick={onLogout}
-                ><FaSignOutAlt className="me-1 text-danger" /></button>
+                <button className="btn btn-outline-light" onClick={handleLogout}>
+          <FaSignOutAlt className="me-1 text-danger" />
+        </button>
               )}
             </div>
           </div>

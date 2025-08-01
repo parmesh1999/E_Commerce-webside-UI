@@ -16,7 +16,7 @@ function FeedbackPage() {
   // const [pageSize, setPageSize] = useState(5);
 
   useEffect(() => {
-    axios.get("https://localhost:7000/api/Rating") // replace with your actual API URL
+    axios.get("http://localhost:7000/api/Rating") // replace with your actual API URL
       .then(res => setRatings(res.data))
       .catch(err => console.error("Error fetching ratings:", err));
   }, []);

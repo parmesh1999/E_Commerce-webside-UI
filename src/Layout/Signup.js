@@ -18,7 +18,7 @@ const Signup = ({ showSignup, setShowSignup, setShowLogin }) => {
 
     try {
       const response = await axios.post(
-        "https://localhost:7000/api/Auth/signup",
+        "http://localhost:7000/api/Auth/signup",
         {
           name: signupName,
           mobile: signupMobile,

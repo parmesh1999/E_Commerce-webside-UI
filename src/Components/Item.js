@@ -37,7 +37,7 @@ function Item() {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get("https://localhost:7000/api/Category"); // Replace with your API endpoint
+      const response = await axios.get("http://localhost:7000/api/Category"); // Replace with your API endpoint
       setCategories(response.data);
     } catch (error) {
       console.error("Failed to load categories", error);

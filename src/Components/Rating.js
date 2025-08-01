@@ -13,7 +13,7 @@ function Rating() {
   const [pageSize, setPageSize] = useState(3);
   const [showAddModal, setShowAddModal] = useState(false);
 
-  const baseUrl = "https://localhost:7000/api/Rating";
+  const baseUrl = "http://localhost:7000/api/Rating";
 
   useEffect(() => {
     fetchRatings();

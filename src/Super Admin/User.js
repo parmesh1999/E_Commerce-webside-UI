@@ -17,20 +17,23 @@ function User() {
 
   const [viewUser, setViewUser] = useState(null);
 
-  const baseUrl = "https://localhost:7000/api/User"; // Update with actual API URL
+  const baseUrl = "http://localhost:7000/api/User"; // Update with actual API URL
 
   useEffect(() => {
     fetchUsers();
   }, []);
-
+  
   const fetchUsers = async () => {
-    try {
-      const response = await axios.get(baseUrl);
-      setUsers(response.data.data);
-    } catch (err) {
-      console.error("Fetch error:", err);
-    }
-  };
+  try {
+    const response = await axios.get(baseUrl);
+    const result = response.data?.data;
+    setUsers(Array.isArray(result) ? result : []);
+  } catch (err) {
+    console.error("Fetch error:", err);
+    setUsers([]); // fallback to empty array to avoid crash
+  }
+};
+
 
   const handleAddUser = async () => {
     if (newUser.name && newUser.email && newUser.mobile && newUser.password ) {
@@ -74,7 +77,7 @@ function User() {
   const handleUpdateUser = async () => {
     if (editUser.name && editUser.email && editUser.mobile && editUser.password) {
       try {
-        await axios.put(`${baseUrl}`, { id: editUserId, ...editUser });
+        await axios.put(`${baseUrl}/${editUserId}`, { id: editUserId, ...editUser });
         setEditUserId(null);
         setEditUser({ name: "", email: "", mobile: "", password: "" });
         fetchUsers();
@@ -94,10 +97,16 @@ function User() {
     link.click();
   };
 
-  const filteredUsers = users.filter((u) =>
-    u.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    u.email.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // const filteredUsers = users.filter((u) =>
+  //   u.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //   u.email.toLowerCase().includes(searchTerm.toLowerCase())
+  // );
+
+  const filteredUsers = Array.isArray(users) ? users.filter((u) =>
+  u.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  u.email?.toLowerCase().includes(searchTerm.toLowerCase())
+) : [];
+
 
   const startIndex = (currentPage - 1) * pageSize;
   const paginatedUsers = filteredUsers.slice(startIndex, startIndex + pageSize);
@@ -154,7 +163,7 @@ function User() {
             <th>Name</th>
             <th>Email</th>
             <th>Mobile</th>
-            <th>Password</th>
+            {/* <th>Password</th> */}
             <th>Actions</th>
           </tr>
         </thead>
@@ -165,7 +174,7 @@ function User() {
               <td>{u.name}</td>
               <td>{u.email}</td>
               <td>{u.mobile}</td>
-              <td>{u.password}</td>
+              {/* <td>{u.password}</td> */}
               <td>
                 <button className="btn btn-link p-0 me-2" onClick={() => handleEditUser(u)}>
                   <i className="bi bi-pencil-fill text-primary fs-5"></i>
@@ -181,7 +190,7 @@ function User() {
           ))}
           {paginatedUsers.length === 0 && (
             <tr>
-              <td colSpan="4" className="text-center">No users found.</td>
+              <td colSpan="5" className="text-center">No users found.</td>
             </tr>
           )}
         </tbody>

@@ -17,7 +17,7 @@ function Role() {
 
   const [viewRole, setViewRole] = useState(null);
 
-  const baseUrl = "https://localhost:7000/api/Role"; // Replace with your actual endpoint
+  const baseUrl = "http://localhost:7000/api/Role"; // Replace with your actual endpoint
 
   useEffect(() => {
     fetchRoles();
@@ -97,9 +97,9 @@ function Role() {
     link.click();
   };
 
-  const filteredRoles = roles.filter((r) =>
+  const filteredRoles = Array.isArray(roles) ? roles.filter((r) =>
     r.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  ) : [];
 
   const startIndex = (currentPage - 1) * pageSize;
   const paginatedRoles = filteredRoles.slice(startIndex, startIndex + pageSize);

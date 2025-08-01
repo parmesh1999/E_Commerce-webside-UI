@@ -12,6 +12,8 @@ function ChangePassword() {
   const [showPassword, setShowPassword] = useState({ current: false, new: false, confirm: false });
   const [passwordStrength, setPasswordStrength] = useState({ level: "none", color: "light", percent: 0 });
 
+  const baseUrl =  "http://localhost:7000/api/User"; // Replace with your actual endpoint
+
   useEffect(() => {
     const userFromStorage = localStorage.getItem("user");
     if (userFromStorage) {
@@ -22,7 +24,7 @@ function ChangePassword() {
 
   const fetchUserData = async (id) => {
     try {
-      const res = await axios.get(`https://localhost:7000/api/User/${id}`);
+      const res = await axios.get(`${baseUrl}/${id}`);
       setUser(res.data.data);
     } catch (error) {
       console.error("Failed to fetch user data for password change", error);
@@ -111,7 +113,7 @@ function ChangePassword() {
       };
       
       const response = await axios.put(
-        `https://localhost:7000/api/User/${user.id}`,
+        `${baseUrl}/${user.id}`,
         payload
       );
       setSuccessMessage(`✅ ${response.data.message || "Password changed successfully!"}`);
